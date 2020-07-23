@@ -1,0 +1,10 @@
+{% extends 'designs/base.html' %}
+{% block content %}
+	<div>
+		<form method="POST">
+			{% csrf_token %}
+			{{ form }}
+			<button type="submit">Login</button>
+		</form>
+	</div>
+{% endblock content %}
