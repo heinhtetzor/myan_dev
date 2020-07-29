@@ -1,4 +1,61 @@
 {% extends 'designs/base.html' %}
+{% block custom_css %}
+<style type="text/css">
+	.content {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr) );
+		column-gap: 8px;
+	}
+	.design-card {
+		border-radius: 8px;
+		border: 1px solid grey;
+		padding: 8px;
+	}
+	.design-card-img {
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+	}
+	.design-card-img-container {
+		height: 200px;
+	}
+</style>
+{% endblock custom_css %}
 {% block content %}
-	<h1>hello</h1>
+	<div class="content">
+		{% for design in object_list %}
+			<div class="card design-card">
+				<div class="design-card-img-container">
+					<img class="card-img-top design-card-img" src="{{design.image_preview.url}}" alt="image_{{design.id}}">
+				</div>
+			  <div class="card-body">
+				    <h5 class="card-title">{{design.title}}</h5>
+				    <p class="card-text">
+				    	{% if design.description %}
+				    	<p>{{design.description}}</p>
+				    	{% else %}
+				    	<p><i>No description avaiable.</i></p>
+				    	{% endif %}
+				    </p>
+				    <a href="{% url 'designs-detail' design.id %}" class="btn btn-primary">Details</a>
+				</div>
+			</div>
+		{% endfor %}
+		<div class="pagination">
+			<span class="step-links">
+				{% if page_obj.has_previous %}
+					<a href="?page=1">&laquo; first</a>
+					<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+				{% endif %}
+		
+				<span class="current">
+					Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+				</span>
+		
+				{% if page_obj.has_next %}
+					<a href="?page={{ page_obj.next_page_number }}">next</a>
+					<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+				{% endif %}
+			</span>
+		</div>
 {% endblock content %}

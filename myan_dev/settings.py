@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     # my apps
     'designs.apps.DesignsConfig',
     'users.apps.UsersConfig',
+    # django-cleanup
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [

@@ -1,10 +1,131 @@
 {% extends 'designs/base.html' %}
-{% load crispy_forms_tags %}
+{% block custom_css %}
+	<style type="text/css">
+		.header {
+			display: flex;
+			flex-direction: row;	
+			height: 150px;
+			margin-bottom: 10px;
+			background: #fff;
+			border-radius: 8px;
+			padding: 8px;
+		}
+		.profile-image {
+			height: 100%;
+			display: block;
+		}
+		.header > * {
+			margin-right: 5px;
+		}
+		.stats {
+			margin-left: auto;
+		}
+		.content-title {
+			display: inline;
+			/* border-bottom: 1px solid black; */
+		}
+		.content {
+			background: #fff;
+			border-radius: 8px;
+			padding: 8px;
+			min-height: 300px;
+		}
+		/* item list */
+		.item-row {
+			display: flex;
+			flex-direction: row;
+
+			align-items: center;
+			margin-top: 4px;
+			height: 100px;
+			border: 1px solid #ccc;
+			padding: 8px;
+			/* shadow */
+			box-shadow: 0 8px 6px -6px #ccc;
+			cursor: pointer;
+
+		}
+		.item-row:hover {
+			box-shadow: 3px 0 12px 0 #ccd;
+		}
+		/* image */
+		.item-image { 
+			width : 100px;
+			height: 100%;
+			object-fit: cover;
+		}
+		.item {
+			margin-left: 10px;
+		}
+		.item-stats {
+			display: flex;
+			flex-direction: column;
+			margin-left: auto;
+		}
+		.datetime {
+			font-style: italic;
+			color: rgb(192, 186, 186);
+		}
+	</style>
+{% endblock custom_css %}
 {% block content %}
-	<form method="POST" enctype="multipart/form-data">
-		{% csrf_token %}
-		{{ u_form|crispy }}
-		{{ p_form|crispy }}
-		<button type="submit">Update</button>
-	</form>
+	<!-- tabs starts -->
+	{% include 'users/tabs.html' %}
+	<!-- tabs ends -->
+
+	<div class="header">
+		<img class="profile-image" src="{{ user.profile.image.url }}">
+		<div class="name-section">
+			<h1>{{ user.first_name }} {{ user.last_name }}</h1>
+			<b>@{{ user.username }}</b><br>
+			<small>{{ user.email }}</small>
+		</div>
+		<div class="stats">
+			Stats
+		</div>
+	</div>
+	<div class="seperator"></div>
+	<div class="content">
+		<h2 class="content-title">All Posts</h2>
+		<div class="content-body">
+			{% for design in designs %}
+			<div class="item-row">
+				<img class="item-image" src="{{ design.image_preview.url }}" alt="{{ designs.id }}_image">
+				<div class="item">
+					<!-- horizontal vertical -->
+					<!-- title -->
+					<h4>{{ design.title }}</h4>
+					<!-- description -->
+					<p>{{ design.description }}</p>
+				</div>
+				<!-- stats -->
+				<div class="item-stats">
+					<!-- vertical flex -->
+					<span>0 Views</span>
+					<span>0 Downloads</span>
+					<span>
+						<p class="datetime">{{ design.datetime_posted | date  }}</p>
+					</span>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="pagination">
+		<span class="step-links">
+			{% if page_obj.has_previous %}
+				<a href="?page=1">&laquo; first</a>
+				<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+			{% endif %}
+	
+			<span class="current">
+				Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+			</span>
+	
+			{% if page_obj.has_next %}
+				<a href="?page={{ page_obj.next_page_number }}">next</a>
+				<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
 {% endblock content %}

@@ -1,10 +1,38 @@
 {% extends 'designs/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block custom_css %}
+<style type="text/css">
+	body {
+		background-image: url({% static "designs/img/logo-no-text.png" %});
+		background-repeat : no-repeat;
+	}
+	.logo-big {
+		width: 50vh;
+		height: 100%;
+	}
+	.login-form {
+		padding: 14px;
+		border-radius: 8px;
+		border: 1px solid #ccc;
+		background-color: #fff;
+		box-shadow: 3px 4px 7px 0px #ccc;
+	}
+</style>
+{% endblock custom_css %}
 {% block content %}
-	<div>
-		<form method="POST">
-			{% csrf_token %}
-			{{ form }}
-			<button type="submit">Login</button>
-		</form>
+	<div class="row">
+		<div class="col-md-4">
+			<!-- <img class="logo-big" src='{% static "designs/img/logo-no-text.png" %}'> -->
+		</div>
+		<div class="col-md-4">
+			<div class="login-form">
+				<form method="POST">
+					{% csrf_token %}
+					{{ form | crispy }}
+					<button type="submit" class="btn btn-outline-dark btn-block">Login</button>
+				</form>
+			</div>
+		</div>
 	</div>
 {% endblock content %}

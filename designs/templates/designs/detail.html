@@ -1,0 +1,6 @@
+{% extends 'designs/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <b>{{ object.file }}</b>
+    <a href="{{object.file.url}}">Download</a>
+{% endblock content %}
